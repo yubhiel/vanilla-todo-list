@@ -1,8 +1,23 @@
 // Initialize the application once the DOM content is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
+	const STORAGE_KEY = 'todos';
+
 	const input = document.querySelector('#new-todo');
 	const addButton = document.querySelector('#add-todo');
 	const list = document.querySelector('#todo-list');
+
+	function saveTodos() {
+		const todos = [];
+
+		for (const item of list.children) {
+			todos.push({
+				text: item.querySelector('span').textContent,
+				done: item.classList.contains('done'),
+			});
+		}
+
+		localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+	}
 
 	function addTodoItem(text) {
 		const item = document.createElement('li');
@@ -29,10 +44,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		checkButton.addEventListener('click', () => {
 			setDone(!item.classList.contains('done'));
+			saveTodos();
 		});
 
 		deleteButton.addEventListener('click', () => {
 			item.remove();
+			saveTodos();
 		});
 
 		actions.append(checkButton, deleteButton);
@@ -48,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 
 		addTodoItem(text);
+		saveTodos();
 
 		input.value = '';
 		input.focus();
