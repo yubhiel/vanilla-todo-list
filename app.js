@@ -1,4 +1,8 @@
 // Initialize the application once the DOM content is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
-	console.log('DOM fully loaded and parsed, please implement the rest');
+	const input = document.querySelector('#new-todo');
+	const addButton = document.querySelector('#add-todo');
+	const list = document.querySelector('#todo-list');
+
+	console.log(input, addButton, list);
 });
