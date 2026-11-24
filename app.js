@@ -22,6 +22,15 @@ document.addEventListener('DOMContentLoaded', () => {
 		deleteButton.classList.add('action-delete');
 		deleteButton.textContent = 'Supprimer';
 
+		function setDone(isDone) {
+			item.classList.toggle('done', isDone);
+			checkButton.textContent = isDone ? 'À faire' : 'Terminée';
+		}
+
+		checkButton.addEventListener('click', () => {
+			setDone(!item.classList.contains('done'));
+		});
+
 		actions.append(checkButton, deleteButton);
 		item.append(label, actions);
 		list.append(item);
