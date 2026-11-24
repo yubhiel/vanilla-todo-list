@@ -31,6 +31,10 @@ document.addEventListener('DOMContentLoaded', () => {
 			setDone(!item.classList.contains('done'));
 		});
 
+		deleteButton.addEventListener('click', () => {
+			item.remove();
+		});
+
 		actions.append(checkButton, deleteButton);
 		item.append(label, actions);
 		list.append(item);
