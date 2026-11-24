@@ -19,7 +19,20 @@ document.addEventListener('DOMContentLoaded', () => {
 		localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
 	}
 
-	function addTodoItem(text) {
+	function loadTodos() {
+		try {
+			const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+
+			if (Array.isArray(data)) {
+				return data;
+			}
+			return [];
+		} catch {
+			return [];
+		}
+	}
+
+	function addTodoItem(text, done) {
 		const item = document.createElement('li');
 		item.classList.add('todo-item');
 
@@ -31,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		const checkButton = document.createElement('button');
 		checkButton.classList.add('action-check');
-		checkButton.textContent = 'Terminée';
 
 		const deleteButton = document.createElement('button');
 		deleteButton.classList.add('action-delete');
@@ -52,6 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			saveTodos();
 		});
 
+		setDone(done);
+
 		actions.append(checkButton, deleteButton);
 		item.append(label, actions);
 		list.append(item);
@@ -64,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			return;
 		}
 
-		addTodoItem(text);
+		addTodoItem(text, false);
 		saveTodos();
 
 		input.value = '';
@@ -78,4 +92,10 @@ document.addEventListener('DOMContentLoaded', () => {
 			addTodo();
 		}
 	});
+	
+	for (const todo of loadTodos()) {
+		if (todo && typeof todo.text === 'string') {
+			addTodoItem(todo.text, todo.done === true);
+		}
+	}
 });
